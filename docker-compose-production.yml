@@ -1,0 +1,12 @@
+version: "2"
+services:
+  web:
+    build: .
+    env_file:
+      - web-variables.env
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
