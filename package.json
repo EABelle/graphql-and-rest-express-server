@@ -4,6 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "lint": "tslint --config tslint.json ./src/**.ts",
+    "lint:fix": "tslint --config tslint.json ./src/**.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
@@ -14,7 +16,7 @@
     "url": "git+https://github.com/EABelle/workast-express-server.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Esteban Bellegarde",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EABelle/workast-express-server/issues"
@@ -35,8 +37,22 @@
     "@types/express-session": "^1.15.16",
     "@types/node": "^12.12.11",
     "@types/request": "^2.48.3",
+    "codelyzer": "^5.2.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.4.3",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint:fix",
+      "git add"
+    ]
   }
 }
