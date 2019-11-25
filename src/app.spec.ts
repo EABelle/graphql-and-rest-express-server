@@ -7,20 +7,20 @@ const createUserRequestFixture = (req?: any) => ({
     ...req
 });
 
-const UserService = require('./api/service/user.service');
-jest.mock('./api/service/user.service');
-
+const UserRepository = require('./api/repository/user.repository');
+jest.mock('./api/repository/user.repository');
 
 describe('Workast app', () => {
+
     describe('POST /user', () => {
         it('should save a user when the user is valid', async () => {
             const createUser = jest.fn();
-            createUser.mockReturnValue(new Promise (resolve => resolve({
+            createUser.mockReturnValueOnce(new Promise (resolve => resolve({
                 _id: 'anId',
                 name: 'aName',
                 avatar: 'anAvatar'
             })));
-            UserService.UserService.createUser = createUser;
+            UserRepository.UserRepository.create = createUser;
             await request(app)
                 .post('/user')
                 .set('Accept', 'application/json')

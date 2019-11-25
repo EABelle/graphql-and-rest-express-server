@@ -1,6 +1,5 @@
 import {Application} from 'express';
 import {userRouter} from './api/router';
-import {USER_PATH} from './api/config/endpoints';
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -16,7 +15,6 @@ app.use(function(_req, res, next) {
     next();
 });
 
-app
-    .use(USER_PATH, userRouter);
+app.use('/user', userRouter);
 
 export default app;
