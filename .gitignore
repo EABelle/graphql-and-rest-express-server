@@ -62,7 +62,7 @@ typings/
 
 # IDE folders
 .idea
-.nvmrc
+.vscode
 
 # env
 **.env
