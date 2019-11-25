@@ -63,3 +63,9 @@ typings/
 # IDE folders
 .idea
 .nvmrc
+
+# env
+**.env
+
+#dist
+dist
