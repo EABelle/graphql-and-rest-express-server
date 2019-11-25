@@ -1,4 +1,4 @@
-import {UserModel} from '../model';
+import {UserModel} from '../model/user.model';
 import {User} from '../domain/User';
 import {UserPayload} from '../contract';
 

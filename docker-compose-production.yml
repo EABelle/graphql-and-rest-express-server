@@ -3,7 +3,7 @@ services:
   web:
     build: .
     env_file:
-      - web-variables.env
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=8080

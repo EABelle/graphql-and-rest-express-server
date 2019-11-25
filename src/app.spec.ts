@@ -1,4 +1,5 @@
 import app from './app';
+import {apiEndpoints} from './api/config';
 
 const request = require('supertest');
 
@@ -12,8 +13,8 @@ jest.mock('./api/repository/user.repository');
 
 describe('Workast app', () => {
 
-    describe('POST /user', () => {
-        it('should save a user when the user is valid', async () => {
+    describe('POST /users', () => {
+        it('should save a users when the users is valid', async () => {
             const createUser = jest.fn();
             createUser.mockReturnValueOnce(new Promise (resolve => resolve({
                 _id: 'anId',
@@ -22,7 +23,7 @@ describe('Workast app', () => {
             })));
             UserRepository.UserRepository.create = createUser;
             await request(app)
-                .post('/user')
+                .post(apiEndpoints.users)
                 .set('Accept', 'application/json')
                 .send(createUserRequestFixture())
                 .expect('Content-Type', /json/)
