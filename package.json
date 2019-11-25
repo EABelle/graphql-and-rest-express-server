@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "tslint --config tslint.json ./src/**.ts",
     "lint:fix": "tslint --config tslint.json ./src/**.ts --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --config ./jest.config.js src",
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "prod": "tsc -p . && node ./dist/index.js"
@@ -39,7 +39,10 @@
     "@types/request": "^2.48.3",
     "codelyzer": "^5.2.0",
     "husky": "^3.1.0",
+    "jest": "^24.9.0",
     "lint-staged": "^9.4.3",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.2.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
