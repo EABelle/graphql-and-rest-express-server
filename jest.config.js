@@ -1,4 +1,5 @@
 module.exports = {
+    preset: '@shelf/jest-mongodb',
     transform: { '^.+\\.ts$': 'ts-jest' },
     testRegex: '(/__tests__/.*|(\\.|/)spec)\\.(js|ts)$',
     testEnvironment: 'node',
