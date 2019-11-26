@@ -51,11 +51,6 @@ describe('ArticleRepository ', () => {
                 .not
                 .toThrow();
         });
-        it('updates the entire document', async () => {
-            const article = await ArticleRepository.create(article1);
-            await expect(ArticleRepository.update(article._id, articleUpdatePayload))
-                .resolves.toEqual({_id: article._id, ...articleUpdatePayload});
-        });
     });
 
     describe('on delete method', () => {

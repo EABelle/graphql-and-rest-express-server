@@ -20,7 +20,7 @@ export class ArticleRepository {
     }
 
     static async delete(id: string): Promise<void> {
-        await ArticleModel.find(id).remove().exec();
+        await ArticleModel.findOneAndDelete(id);
     }
 
     static async getAll(tags: string[]): Promise<Article[]> {
