@@ -5,7 +5,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8080:8080"
+      - "${DOCKER_SERVER_PORTS}"
     depends_on:
       - mongo
   mongo:
@@ -13,5 +13,7 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
+    env_file:
+      - .env
     ports:
-      - "27017:27017"
+      - "${DOCKER_MONGO_PORTS}"
