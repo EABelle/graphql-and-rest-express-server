@@ -1,5 +1,12 @@
 import {ArticleRepository} from '../article.repository';
-const dbHandler = require('../__mocks__/db-handler');
+import {
+    article1,
+    articleUpdatePayload,
+    articleWithEmptyTags,
+    articleWithoutText,
+    articleWithoutTitle, articleWithoutUserId,
+} from '../__mocks__';
+import {dbHandler} from '../../../utils';
 
 beforeAll(async () => await dbHandler.connect());
 afterEach(async () => await dbHandler.clearDatabase());
@@ -62,42 +69,3 @@ describe('ArticleRepository ', () => {
         });
     });
 });
-
-const article1 = {
-    'title': 'My Article',
-    'text': 'This is my first article',
-    'tags': ['tag1', 'tag2'],
-    'userId': '5ddc3ea01614280e2846d3d8'
-};
-
-const articleWithoutTitle = {
-    'text': 'This is my first article',
-    'tags': ['tag1', 'tag2'],
-    'userId': '5ddc3ea01614280e2846d3d8'
-};
-
-const articleWithoutText = {
-    'title': 'My Article',
-    'tags': ['tag1', 'tag2'],
-    'userId': '5ddc3ea01614280e2846d3d8'
-};
-
-const articleWithoutUserId = {
-    'title': 'My Article',
-    'text': 'This is my first article',
-    'tags': ['tag1', 'tag2'],
-};
-
-const articleWithEmptyTags = {
-    'title': 'My Article',
-    'text': 'This is my first article',
-    'tags': [],
-    'userId': '5ddc3ea01614280e2846d3d8'
-};
-
-const articleUpdatePayload = {
-    'title': 'My Article2',
-    'text': 'This is my second article',
-    'tags': ['tag1', 'tag2', 'tag3'],
-    'userId': '5ddc3ea01614280e2846d3d8'
-};

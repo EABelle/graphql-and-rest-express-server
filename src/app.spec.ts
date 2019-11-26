@@ -8,8 +8,20 @@ const createUserRequestFixture = (req?: any) => ({
     ...req
 });
 
+const createArticleRequestFixture = (req?: any) => ({
+    _id: 'anId',
+    title: 'My Article',
+    text: 'This is my first article',
+    tags: ['tag1', 'tag2'],
+    userId: 'aUserId',
+    ...req
+});
+
 const UserRepository = require('./api/repository/user.repository');
 jest.mock('./api/repository/user.repository');
+
+const ArticleRepository = require('./api/repository/article.repository');
+jest.mock('./api/repository/article.repository');
 
 describe('Workast app', () => {
 
@@ -62,7 +74,7 @@ describe('Workast app', () => {
             process.env.API_KEY = TEST_API_KEY;
         });
 
-        it('should save a users when the users is valid', async () => {
+        it('should save a user when the user is valid', async () => {
             const createUser = jest.fn();
             createUser.mockReturnValueOnce(new Promise (resolve => resolve({
                 _id: 'anId',
@@ -80,6 +92,66 @@ describe('Workast app', () => {
                     id: 'anId',
                     name: 'aName',
                     avatar: 'anAvatar'
+                });
+        });
+
+        it('should return a 400 when the user from request does not have name', async () => {
+            const createUser = jest.fn();
+            createUser.mockReturnValueOnce(new Promise (resolve => resolve({
+                _id: 'anId',
+                name: 'aName',
+                avatar: 'anAvatar'
+            })));
+            UserRepository.UserRepository.create = createUser;
+            await request(app)
+                .post(apiEndpoints.users)
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createUserRequestFixture({name: undefined}))
+                .expect('Content-Type', /json/)
+                .expect(400);
+        });
+    });
+
+    describe('POST /articles', () => {
+
+        beforeAll(() => {
+            jest.resetModules();
+            process.env.API_KEY = TEST_API_KEY;
+        });
+
+        it('should return 400 a users when the user request does not have userId', async () => {
+            await request(app)
+                .post(apiEndpoints.users)
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createArticleRequestFixture({userId: undefined}))
+                .expect('Content-Type', /json/)
+                .expect(400);
+        });
+
+        it('should return 200 for valid articles', async () => {
+            const createArticle = jest.fn();
+            createArticle.mockReturnValueOnce(new Promise (resolve => resolve({
+                '_id': 'anId',
+                'title': 'My Article',
+                'text': 'This is my first article',
+                'tags': ['tag1', 'tag2'],
+                'userId': 'aUserId'
+            })));
+            ArticleRepository.ArticleRepository.create = createArticle;
+            await request(app)
+                .post(apiEndpoints.articles)
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createArticleRequestFixture())
+                .expect('Content-Type', /json/)
+                .expect(200, {
+                    id: 'anId',
+                    title: 'My Article',
+                    text: 'This is my first article',
+                    tags: ['tag1', 'tag2'],
+                    userId: 'aUserId'
                 });
         });
     });

@@ -1,5 +1,6 @@
 import {UserRepository} from '../user.repository';
-const dbHandler = require('../__mocks__/db-handler');
+import {user1, userWithoutAvatar, userWithoutName} from '../__mocks__';
+import {dbHandler} from '../../../utils';
 
 beforeAll(async () => await dbHandler.connect());
 afterEach(async () => await dbHandler.clearDatabase());
@@ -14,21 +15,16 @@ describe('UserRepository ', () => {
                 .toThrow();
         });
 
+        it(`can create without an avatar`, async () => {
+            // @ts-ignore
+            await expect(() => UserRepository.create(userWithoutAvatar))
+                .not.toThrow();
+        });
+
         it(`doesn't create without a name`, async () => {
             // @ts-ignore
             await expect(UserRepository.create(userWithoutName))
                 .rejects.toThrow();
         });
     });
-
-
 });
-
-const user1 = {
-    name: 'User 1',
-    avatar: 'user1.jpg',
-};
-
-const userWithoutName = {
-    avatar: 'user1.jpg',
-};

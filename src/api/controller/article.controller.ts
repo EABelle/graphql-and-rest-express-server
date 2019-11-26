@@ -2,12 +2,13 @@ import {NextFunction, Response, Request} from 'express';
 import {ArticlePayload, ArticleResponse} from '../contract';
 import {Article} from '../domain/Article';
 import {ArticleService} from '../service/article.service';
+import {validationResult} from 'express-validator';
 
 export class ArticleController {
 
     public static async getArticles(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const tags: string[] = req.query.tag;
         try {
-            const tags: string[] = req.query.tag;
             const articles: Article[] = await ArticleService.getArticles(tags);
             const articlesResponse: ArticleResponse[] = articles.map(article => ({
                 id: article._id,
@@ -22,9 +23,13 @@ export class ArticleController {
         }
     }
 
-    public static async createArticle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public static async createArticle(req: Request, res: Response, next: NextFunction) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const articleRequest: ArticlePayload = req.body;
         try {
-            const articleRequest: ArticlePayload = req.body;
             const article: Article = await ArticleService.createArticle(articleRequest);
             const articleResponse: ArticleResponse = {
                 id: article._id,
@@ -39,12 +44,15 @@ export class ArticleController {
         }
     }
 
-    public static async editArticle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public static async editArticle(req: Request, res: Response, next: NextFunction) {
+        const errors = validationResult(req);
+        const articleRequest: ArticlePayload = req.body;
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id: string = req.query.id;
         try {
-            const articleRequest: ArticlePayload = req.body;
-            const id: string = req.query.id;
             const article: Article = await ArticleService.updateArticle(id, articleRequest);
-            console.log(article);
             const articleResponse: ArticleResponse = {
                 id: article._id,
                 title: article.title,
@@ -58,9 +66,13 @@ export class ArticleController {
         }
     }
 
-    public static async deleteArticle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public static async deleteArticle(req: Request, res: Response, next: NextFunction) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id: string = req.query.id;
         try {
-            const id: string = req.query.id;
             await ArticleService.deleteArticle(id);
             res.json({});
         } catch (e) {

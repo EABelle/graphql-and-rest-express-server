@@ -19,6 +19,4 @@ export class ArticleService {
     static async deleteArticle(id: string): Promise<void> {
         return await ArticleRepository.delete(id);
     }
-
-
 }
