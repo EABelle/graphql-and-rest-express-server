@@ -43,7 +43,7 @@ MONGODB_URI=mongodb://mongo:{SERVER_MONGODB_PORT}/{SERVER_MONGODB_DB_NAME}
 API_KEY=5CD4ED173E1C95FE763B753A297D5
 ```
 
-*The above configuration exposes the API to `http://localhost:8080/` 
+**The above configuration exposes the API to `http://localhost:8080/`*
 
 Then, you only have to run the following command to build and run both app and MongoDB containers:
 ```
@@ -83,7 +83,7 @@ Example of header: `x-api-key: 5CD4ED173E1C95FE763B753A297D5`
 
 #### Endpoints and methods
 
-*A Postman collection is provided in order to show examples of the requests: https://www.getpostman.com/collections/fedfd07ad9655301249e
+**A Postman collection is provided in order to show examples of the requests: https://www.getpostman.com/collections/fedfd07ad9655301249e*
 
 The followings are the HTTP methods and endpoints of the API:
 
