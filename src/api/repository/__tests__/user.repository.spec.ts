@@ -1,5 +1,5 @@
 import {UserRepository} from '../user.repository';
-const dbHandler = require('../__utils__/db-handler');
+const dbHandler = require('../__mocks__/db-handler');
 
 beforeAll(async () => await dbHandler.connect());
 afterEach(async () => await dbHandler.clearDatabase());
