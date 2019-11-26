@@ -45,7 +45,7 @@ export class ArticleController {
         }
         const id: string = req.params.id;
         try {
-            const article: Article = await ArticleService.updateArticle(id, articleRequest);
+            const article: Article | null = await ArticleService.updateArticle(id, articleRequest);
             if (!article) {
                 return res.status(404).json({message: 'Article not found'});
             }

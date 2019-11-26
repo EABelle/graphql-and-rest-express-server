@@ -14,7 +14,7 @@ export class ArticleService {
         return await ArticleRepository.create(articlePayload);
     }
 
-    static async updateArticle(id: string, articlePayload: ArticlePayload): Promise<Article> {
+    static async updateArticle(id: string, articlePayload: ArticlePayload): Promise<Article | null> {
         return await ArticleRepository.update(id, articlePayload);
     }
 
