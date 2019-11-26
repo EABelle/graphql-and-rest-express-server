@@ -12,17 +12,17 @@ Also, as you'll need **docker-compose** to run it with a MongoDB container:
 
 - Docker Compose v1.24.1: https://docs.docker.com/compose/install/
 
-####Run
+#### Run
 
 **The following environvent variables are necessary:**
 
-- NODE_ENV (`NODE_ENV=production`) 
-- PORT: The port which the server will be listening (`example: 8080`)
-- EXTERNAL_SERVER_PORT: The port which binds the application port with the docker ports (`example: 8080`)
-- DOCKER_SERVER_PORTS: The **ports** value for the web app section of the `docker-compose.yml`, which matches with EXTERNAL_SERVER_PORT:PORT (i.e.: `8080:8080`) 
-- MONGODB_URI: The uri for the app to connect to the database (i.e.: `mongodb://localhost:270127/workast`)
-- DOCKER_MONGO_PORTS: The **ports** value for the mongo section of the `docker-compose.yml`, the value of the right has to match with the port of the URI (i.e.: `270127:27017`)
-- API_KEY: The value of the header which has to match to authorize the requests. (i.e. `5CD4ED173E1C95FE763B753A297D5`).
+- `NODE_ENV`: (`NODE_ENV=production`) 
+- `PORT`: The port which the server will be listening (`example: 8080`)
+- `EXTERNAL_SERVER_PORT`: The port which binds the application port with the docker ports (`example: 8080`)
+- `DOCKER_SERVER_PORTS`: The **ports** value for the web app section of the `docker-compose.yml`, which matches with EXTERNAL_SERVER_PORT:PORT (i.e.: `8080:8080`) 
+- `MONGODB_URI`: The uri for the app to connect to the database (i.e.: `mongodb://localhost:270127/workast`)
+- `DOCKER_MONGO_PORTS`: The **ports** value for the mongo section of the `docker-compose.yml`, the value of the right has to match with the port of the URI (i.e.: `270127:27017`)
+- `API_KEY`: The value of the header which has to match to authorize the requests. (i.e. `5CD4ED173E1C95FE763B753A297D5`).
 
 You may use a `.env` named file as the following to provide the variables to the app:
 
