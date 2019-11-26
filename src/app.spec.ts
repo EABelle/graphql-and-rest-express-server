@@ -29,17 +29,33 @@ describe('Workast app', () => {
     const TEST_API_KEY = 'TEST_API_KEY';
     const NOT_VALID_API_KEY = 'NOT_VALID_API_KEY';
 
-    it('should return 404', async () => {
-        await request(app)
-            .get('/not-valid')
-            .expect(404);
+    describe('Not functional endpoints', () => {
+
+        beforeEach(() => {
+            jest.resetModules(); // this is important - it clears the cache
+            process.env.API_KEY = TEST_API_KEY;
+        });
+
+        afterEach(() => {
+            process.env.API_KEY = DEFAULT_API_KEY;
+        });
+
+        it('should check health', async () => {
+            await request(app)
+                .get('/health')
+                .set('x-api-key', TEST_API_KEY)
+                .expect(200);
+        });
+
+        it('should return 404 when an endpoint is not valid', async () => {
+            await request(app)
+                .get('/not-valid')
+                .set('x-api-key', TEST_API_KEY)
+                .expect(404);
+        });
     });
 
-    it('should check health', async () => {
-        await request(app)
-            .get('/health')
-            .expect(200);
-    });
+
 
     describe('Authorization', () => {
 
@@ -115,9 +131,13 @@ describe('Workast app', () => {
 
     describe('POST /articles', () => {
 
-        beforeAll(() => {
+        beforeEach(() => {
             jest.resetModules();
             process.env.API_KEY = TEST_API_KEY;
+        });
+
+        afterEach(() => {
+            process.env.API_KEY = DEFAULT_API_KEY;
         });
 
         it('should return 400 a users when the user request does not have userId', async () => {
