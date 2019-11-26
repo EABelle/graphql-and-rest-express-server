@@ -76,6 +76,8 @@ Example of header: `x-api-key: 5CD4ED173E1C95FE763B753A297D5`
 
 #### Endpoints and methods
 
+*A Postman collection is provided in order to show examples of the requests: https://www.getpostman.com/collections/fedfd07ad9655301249e
+
 The followings are the HTTP methods and endpoints of the API:
 
 - `POST /users`
