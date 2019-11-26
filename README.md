@@ -53,6 +53,11 @@ $ docker-compose up --build
 **Node.js**: The project runs with the Node.js v10.15.3, so that is not recommended the using of previous versions.
 This version is also present within the `.nvmrc` file in case you have **nvm** installed.
 
+Once you have Node installed, execute:
+
+```
+$ npm i
+```
 
 
 To run tests:
