@@ -3,6 +3,7 @@ import {UserService} from '../service/user.service';
 import {User} from '../domain/User';
 import {UserPayload, UserResponse} from '../contract';
 import {validationResult} from 'express-validator';
+import {transform} from '../transformer/userTransformer';
 
 export class UserController {
 
@@ -14,7 +15,7 @@ export class UserController {
             }
             const userRequest: UserPayload = req.body;
             const user: User = await UserService.createUser(userRequest);
-            const userResponse: UserResponse = { id: user._id, name: user.name, avatar: user.avatar };
+            const userResponse: UserResponse = transform(user);
             res.json(userResponse);
         } catch (e) {
             next(new Error(e.message));

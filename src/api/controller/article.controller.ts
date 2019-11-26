@@ -3,6 +3,7 @@ import {ArticlePayload, ArticleResponse} from '../contract';
 import {Article} from '../domain/Article';
 import {ArticleService} from '../service/article.service';
 import {validationResult} from 'express-validator';
+import {transform, transformList} from '../transformer/articleTransformer';
 
 export class ArticleController {
 
@@ -10,13 +11,7 @@ export class ArticleController {
         const tags: string[] = req.query.tag;
         try {
             const articles: Article[] = await ArticleService.getArticles(tags);
-            const articlesResponse: ArticleResponse[] = articles.map(article => ({
-                id: article._id,
-                title: article.title,
-                text: article.text,
-                tags: article.tags,
-                userId: article.userId
-            }));
+            const articlesResponse: ArticleResponse[] = transformList(articles);
             res.json(articlesResponse);
         } catch (e) {
             next(new Error(e.message));
@@ -31,13 +26,7 @@ export class ArticleController {
         const articleRequest: ArticlePayload = req.body;
         try {
             const article: Article = await ArticleService.createArticle(articleRequest);
-            const articleResponse: ArticleResponse = {
-                id: article._id,
-                title: article.title,
-                text: article.text,
-                tags: article.tags,
-                userId: article.userId
-            };
+            const articleResponse: ArticleResponse = transform(article);
             res.json(articleResponse);
         } catch (e) {
             next(new Error(e.message));
@@ -53,13 +42,8 @@ export class ArticleController {
         const id: string = req.query.id;
         try {
             const article: Article = await ArticleService.updateArticle(id, articleRequest);
-            const articleResponse: ArticleResponse = {
-                id: article._id,
-                title: article.title,
-                text: article.text,
-                tags: article.tags,
-                userId: article.userId
-            };
+            const articleResponse: ArticleResponse = transform(article);
+
             res.json(articleResponse);
         } catch (e) {
             next(new Error(e.message));
@@ -80,3 +64,4 @@ export class ArticleController {
         }
     }
 }
+
