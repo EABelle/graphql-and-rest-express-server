@@ -1,14 +1,14 @@
 import {Router} from 'express';
 import {UserController} from '../controller/user.controller';
 import {ArticleController} from '../controller/article.controller';
-import {param, body} from 'express-validator';
+import {param, body, query} from 'express-validator';
 
 const validations = {
     user: {
         post: [body('name').exists()]
     },
     article: {
-        get: [],
+        get: [query('tag').exists()],
         post: [body('userId').exists()],
         put: [param('id').exists(), body('userId').exists()],
         delete: [param('id').exists()]

@@ -10,7 +10,6 @@ export const authorization = [
         }
     },
     (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
-        console.error(err.stack);
         if (err) {
             res.status(401).send({message: err.message});
         }

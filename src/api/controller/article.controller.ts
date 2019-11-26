@@ -7,7 +7,11 @@ import {transform, transformList} from '../transformer/articleTransformer';
 
 export class ArticleController {
 
-    public static async getArticles(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public static async getArticles(req: Request, res: Response, next: NextFunction) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const tags: string[] = req.query.tag;
         try {
             const articles: Article[] = await ArticleService.getArticles(tags);
@@ -39,12 +43,14 @@ export class ArticleController {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const id: string = req.query.id;
+        const id: string = req.params.id;
         try {
             const article: Article = await ArticleService.updateArticle(id, articleRequest);
+            if (!article) {
+                return res.status(404).json({message: 'Article not found'});
+            }
             const articleResponse: ArticleResponse = transform(article);
-
-            res.json(articleResponse);
+            return res.json(articleResponse);
         } catch (e) {
             next(new Error(e.message));
         }
@@ -55,10 +61,14 @@ export class ArticleController {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const id: string = req.query.id;
+        const id: string = req.params.id;
         try {
-            await ArticleService.deleteArticle(id);
-            res.json({});
+            const deleteCount: number = await ArticleService.deleteArticle(id);
+            if (!deleteCount) {
+                res.status(404);
+                res.json({message: 'article not found to delete'});
+            }
+            res.json({message: `deleted`});
         } catch (e) {
             next(new Error(e.message));
         }

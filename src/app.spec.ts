@@ -140,7 +140,7 @@ describe('Workast app', () => {
             process.env.API_KEY = DEFAULT_API_KEY;
         });
 
-        it('should return 400 a users when the user request does not have userId', async () => {
+        it('should return 400 a users when the request body does not have userId', async () => {
             await request(app)
                 .post(apiEndpoints.users)
                 .set('Accept', 'application/json')
@@ -173,6 +173,169 @@ describe('Workast app', () => {
                     tags: ['tag1', 'tag2'],
                     userId: 'aUserId'
                 });
+        });
+    });
+
+    describe('PUT /articles', () => {
+
+        beforeEach(() => {
+            jest.resetModules();
+            process.env.API_KEY = TEST_API_KEY;
+        });
+
+        afterEach(() => {
+            process.env.API_KEY = DEFAULT_API_KEY;
+        });
+
+        it('should return 400 a users when the request body does not have a userId', async () => {
+            await request(app)
+                .put(apiEndpoints.articles  + '/anId')
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createArticleRequestFixture({userId: undefined}))
+                .expect('Content-Type', /json/)
+                .expect(400);
+        });
+
+        it('should return 404 when the article id is not found', async () => {
+            const updateArticle = jest.fn();
+            updateArticle.mockReturnValueOnce(new Promise (resolve => resolve(null)));
+            ArticleRepository.ArticleRepository.update = updateArticle;
+            await request(app)
+                .put(apiEndpoints.articles)
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createArticleRequestFixture())
+                .expect('Content-Type', /json/)
+                .expect(404);
+        });
+
+        it('should return 200 when the article id is found', async () => {
+
+            const updateArticle = jest.fn();
+            updateArticle.mockReturnValueOnce(new Promise (resolve => resolve({
+                '_id': 'anId',
+                'title': 'My Article',
+                'text': 'This is my first article',
+                'tags': ['tag1', 'tag2'],
+                'userId': 'aUserId'
+            })));
+            ArticleRepository.ArticleRepository.update = updateArticle;
+            await request(app)
+                .put(apiEndpoints.articles + '/anId')
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .send(createArticleRequestFixture({'text': 'changedText'}))
+                .expect('Content-Type', /json/)
+                .expect(200);
+        });
+    });
+
+    describe('DELETE /articles', () => {
+
+        beforeEach(() => {
+            jest.resetModules();
+            process.env.API_KEY = TEST_API_KEY;
+        });
+
+        afterEach(() => {
+            process.env.API_KEY = DEFAULT_API_KEY;
+        });
+
+        it('should return 404 when the article id is not found', async () => {
+            const deleteArticle = jest.fn();
+            deleteArticle.mockReturnValueOnce(Promise.resolve(0));
+            ArticleRepository.ArticleRepository.delete = deleteArticle;
+            await request(app)
+                .delete(apiEndpoints.articles + '/notValid')
+                .set('x-api-key', TEST_API_KEY)
+                .send()
+                .expect('Content-Type', /json/)
+                .expect(404);
+        });
+
+        it('should return 200 when the article id is found', async () => {
+
+            const deleteArticle = jest.fn();
+            deleteArticle.mockReturnValueOnce(Promise.resolve(1));
+            ArticleRepository.ArticleRepository.delete = deleteArticle;
+            await request(app)
+                .delete(apiEndpoints.articles + '/notValid')
+                .set('x-api-key', TEST_API_KEY)
+                .send()
+                .expect('Content-Type', /json/)
+                .expect(200);
+        });
+    });
+
+    describe('GET /articles', () => {
+
+        beforeEach(() => {
+            jest.resetModules();
+            process.env.API_KEY = TEST_API_KEY;
+        });
+
+        afterEach(() => {
+            process.env.API_KEY = DEFAULT_API_KEY;
+        });
+
+        it('should return 400 when the request does not have at least one tag as query param', async () => {
+            await request(app)
+                .get(apiEndpoints.articles)
+                .set('Accept', 'application/json')
+                .set('x-api-key', TEST_API_KEY)
+                .expect(400);
+        });
+
+        it('should return 200 when the article has one tag', async () => {
+
+            const getArticles = jest.fn();
+            getArticles.mockReturnValueOnce(Promise.resolve({
+                '_id': 'anId',
+                'title': 'My Article',
+                'text': 'This is my first article',
+                'tags': ['tag1', 'tag2'],
+                'userId': 'aUserId'
+            }));
+            ArticleRepository.ArticleRepository.getByTags = getArticles;
+            await request(app)
+                .get(apiEndpoints.articles)
+                .query({'tag': 'tag1'})
+                .set('x-api-key', TEST_API_KEY)
+                .expect('Content-Type', /json/)
+                .expect(200, [{
+                    'id': 'anId',
+                    'title': 'My Article',
+                    'text': 'This is my first article',
+                    'tags': ['tag1', 'tag2'],
+                    'userId': 'aUserId'
+                }]);
+        });
+
+        it('should return 200 when the article has many tags', async () => {
+
+            const getArticles = jest.fn();
+            getArticles.mockReturnValueOnce(Promise.resolve({
+                '_id': 'anId',
+                'title': 'My Article',
+                'text': 'This is my first article',
+                'tags': ['tag1', 'tag2'],
+                'userId': 'aUserId'
+            }));
+            ArticleRepository.ArticleRepository.getByTags = getArticles;
+            await request(app)
+                .get(apiEndpoints.articles)
+                .query({'tag': 'tag1'})
+                .query({'tag': 'tag2'})
+                .set('x-api-key', TEST_API_KEY)
+                .expect('Content-Type', /json/)
+                .expect(200, [{
+                    'id': 'anId',
+                    'title': 'My Article',
+                    'text': 'This is my first article',
+                    'tags': ['tag1', 'tag2'],
+                    'userId': 'aUserId'
+                }]);
         });
     });
 });

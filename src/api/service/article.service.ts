@@ -5,7 +5,9 @@ import {Article} from '../domain/Article';
 export class ArticleService {
 
     static async getArticles(tags: string[]): Promise<Article[]> {
-        return await ArticleRepository.getAll(tags);
+        const articles: Article | Article[] = await ArticleRepository.getByTags(tags);
+        // @ts-ignore
+        return articles.hasOwnProperty('length') ? articles : [articles];
     }
 
     static async createArticle(articlePayload: ArticlePayload): Promise<Article> {
@@ -16,7 +18,7 @@ export class ArticleService {
         return await ArticleRepository.update(id, articlePayload);
     }
 
-    static async deleteArticle(id: string): Promise<void> {
+    static async deleteArticle(id: string): Promise<number> {
         return await ArticleRepository.delete(id);
     }
 }
