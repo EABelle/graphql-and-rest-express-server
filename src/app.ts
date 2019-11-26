@@ -2,22 +2,23 @@ require('dotenv').config();
 import {Application} from 'express';
 import {articleRouter, userRouter} from './api/router';
 import {apiEndpoints} from './api/config';
+import {accessControl} from './common/access-control';
+import {fourOFourMiddleware} from './common/404-middleware';
+import {authorization} from './common/authorization';
 const express = require('express');
 const bodyParser = require('body-parser');
+const healthcheck = require('express-healthcheck')();
 
 const app: Application = express();
-
 app
+    .disable('x-powered-by')
+    .get('/health(check)?', healthcheck)
     .use(bodyParser.urlencoded({extended: false}))
     .use(bodyParser.json())
-    .use(function(_req, res, next) {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Authorization, Content-Type, Accept, X-Api-Key');
-        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-        next();
-    })
+    .use(accessControl)
+    .use(authorization)
     .use(apiEndpoints.articles, articleRouter)
-    .use(apiEndpoints.users, userRouter);
+    .use(apiEndpoints.users, userRouter)
+    .use(fourOFourMiddleware);
 
 export default app;
