@@ -24,7 +24,7 @@ Also, as you'll need **docker-compose** to run it with a MongoDB container:
 - `DOCKER_MONGO_PORTS`: The **ports** value for the mongo section of the `docker-compose.yml`, the value of the right has to match with the port of the URI (i.e.: `270127:27017`)
 - `API_KEY`: The value of the header which has to match to authorize the requests. (i.e. `5CD4ED173E1C95FE763B753A297D5`).
 
-You may use a `.env` named file as the following to provide the variables to the app:
+You may use a `.env` named file like the following, at the root of your working tree, to provide the variables to the app:
 
 ```dotenv
 NODE_ENV=production
