@@ -1,4 +1,4 @@
-# workast-express-server
+# graphql-and-rest-express-server
 
 ## Requirements
 
@@ -140,4 +140,5 @@ The followings are the HTTP methods and endpoints of the API:
   Deletes an article. 
   - params: `/:id`: The id of the article
 
-
+#### GraphQL
+The GraphiQL API is exposed at `/graphql`
