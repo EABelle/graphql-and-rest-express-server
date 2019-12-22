@@ -1,6 +1,6 @@
 import {NextFunction, Response, Request} from 'express';
 import {UserService} from '../service/user.service';
-import {User} from '../domain/User';
+import {User} from '../../core/domain/User';
 import {UserPayload, UserResponse} from '../contract';
 import {validationResult} from 'express-validator';
 import {transform} from '../transformer/userTransformer';

@@ -1,5 +1,5 @@
-import {ArticleModel} from '../model/article.model';
-import {Article} from '../domain/Article';
+import {ArticleModel} from '../../core/model/article.model';
+import {Article} from '../../core/domain/Article';
 import {ArticlePayload} from '../contract';
 
 export class ArticleRepository {

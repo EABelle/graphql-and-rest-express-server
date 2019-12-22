@@ -1,4 +1,4 @@
-import {User} from '../domain/User';
+import {User} from '../../core/domain/User';
 import {UserRepository} from '../repository/user.repository';
 import {UserPayload} from '../contract';
 

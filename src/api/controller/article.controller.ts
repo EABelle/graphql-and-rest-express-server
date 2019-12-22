@@ -1,6 +1,6 @@
 import {NextFunction, Response, Request} from 'express';
 import {ArticlePayload, ArticleResponse} from '../contract';
-import {Article} from '../domain/Article';
+import {Article} from '../../core/domain/Article';
 import {ArticleService} from '../service/article.service';
 import {validationResult} from 'express-validator';
 import {transform, transformList} from '../transformer/articleTransformer';

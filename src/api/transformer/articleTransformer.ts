@@ -1,4 +1,4 @@
-import {Article} from '../domain/Article';
+import {Article} from '../../core/domain/Article';
 import {ArticleResponse} from '../contract';
 
 export function transform(article: Article): ArticleResponse {

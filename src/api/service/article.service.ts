@@ -1,6 +1,6 @@
 import {ArticlePayload} from '../contract';
 import {ArticleRepository} from '../repository/article.repository';
-import {Article} from '../domain/Article';
+import {Article} from '../../core/domain/Article';
 
 export class ArticleService {
 
